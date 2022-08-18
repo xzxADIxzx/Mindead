@@ -21,6 +21,7 @@ public class Main extends Plugin {
             if (engine != null) engine.update();
         }, 0f, 0.2f);
 
+        Events.run(WorldLoadEvent.class, Generator::generate);
         Events.on(PlayerJoin.class, event -> {
             engine = new Engine(event.player.tileX(), event.player.tileY() + 10);
         });
