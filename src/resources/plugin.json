@@ -1,0 +1,10 @@
+{
+	"name": "mindead",
+	"displayName": "Mindead",
+	"description": "It will work soon, I promise.",
+	"author": "xzxADIxzx",
+	"version": "-1.0.0",
+	"minGameVersion": "137",
+	"hidden": true,
+	"main": "mindead.Main"
+}
