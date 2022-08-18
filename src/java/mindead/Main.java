@@ -3,6 +3,7 @@ package mindead;
 import arc.Events;
 import arc.util.CommandHandler;
 import arc.util.Timer;
+import mindead.components.Schematics;
 import mindead.types.Engine;
 import mindustry.game.EventType.*;
 import mindustry.mod.Plugin;
@@ -13,6 +14,7 @@ public class Main extends Plugin {
 
     @Override
     public void init() {
+        Schematics.load();
         Generator.load();
 
         Timer.schedule(() -> {

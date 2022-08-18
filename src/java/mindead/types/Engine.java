@@ -12,6 +12,7 @@ import mindustry.gen.Sounds;
 import mindustry.graphics.Pal;
 
 import static mindustry.Vars.*;
+import static mindead.components.Schematics.*;
 
 public class Engine implements Position {
 
@@ -25,6 +26,8 @@ public class Engine implements Position {
     public Engine(int x, int y) { // TODO: add ShortSchematics and spawn engine scheme
         this.x = x * tilesize + 4f;
         this.y = y * tilesize + 4f;
+
+        at(engine, x, y, state.rules.defaultTeam);
     }
 
     public void update() {
