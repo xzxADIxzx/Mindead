@@ -15,7 +15,7 @@ import static mindustry.Vars.*;
 
 public class Engine implements Position {
 
-    public static float radius = 80f;
+    public static final float radius = 80f;
 
     private float x, y;
     private float progress;
