@@ -3,7 +3,7 @@ package mindead;
 import arc.Events;
 import arc.util.CommandHandler;
 import arc.util.Timer;
-import mindead.components.Schematics;
+import mindead.content.Schematics;
 import mindead.types.Engine;
 import mindustry.game.EventType.*;
 import mindustry.mod.Plugin;

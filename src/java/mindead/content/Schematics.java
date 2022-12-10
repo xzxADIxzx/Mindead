@@ -1,7 +1,8 @@
-package mindead.components;
+package mindead.content;
 
 import mindustry.game.Schematic;
 import mindustry.game.Team;
+import useful.ShortSchematics;
 
 import static mindustry.Vars.*;
 

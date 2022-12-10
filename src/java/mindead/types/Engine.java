@@ -11,8 +11,8 @@ import mindustry.gen.Player;
 import mindustry.gen.Sounds;
 import mindustry.graphics.Pal;
 
+import static mindead.content.Schematics.*;
 import static mindustry.Vars.*;
-import static mindead.components.Schematics.*;
 
 public class Engine implements Position {
 
