@@ -1,17 +1,16 @@
 package mindead;
 
-import arc.Events;
+import arc.struct.Seq;
 import arc.util.CommandHandler;
 import arc.util.Timer;
 import mindead.content.Schematics;
 import mindead.types.Engine;
-import mindustry.game.EventType.*;
 import mindustry.mod.Plugin;
 import useful.Bundle;
 
 public class Main extends Plugin {
 
-    private Engine engine;
+    public static Seq<Engine> engines = new Seq<>();
 
     @Override
     public void init() {
@@ -21,13 +20,8 @@ public class Main extends Plugin {
         Generator.load();
 
         Timer.schedule(() -> {
-            if (engine != null) engine.update();
+            engines.each(Engine::update);
         }, 0f, 0.2f);
-
-        Events.run(WorldLoadEvent.class, Generator::generate);
-        Events.on(PlayerJoin.class, event -> {
-            engine = new Engine(event.player.tileX(), event.player.tileY() + 10);
-        });
     }
 
     @Override

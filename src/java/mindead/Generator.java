@@ -10,6 +10,11 @@ import static mindustry.Vars.*;
 
 public class Generator {
 
+    public static final Block survivalSpawn = Blocks.coreShard;
+    public static final Block murderSpawn = Blocks.coreCitadel;
+    public static final Block generator = Blocks.combustionGenerator;
+    public static final Block exitDoor = Blocks.multiPress;
+
     public static final Rules rules = new Rules();
 
     public static void load() {
@@ -25,6 +30,10 @@ public class Generator {
     }
 
     public static void generate() {
+        Groups.build.each(build -> {
+            if (build.block == generator) engines.add(new Engine(build.tileX(), build.tileY()));
+        });
+
         app.post(() -> {
             state.rules = rules;
             Call.setRules(rules);
