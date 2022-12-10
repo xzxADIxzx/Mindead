@@ -19,7 +19,7 @@ import static mindustry.Vars.*;
 public class Generator {
 
     public static final Block survivalSpawn = Blocks.coreShard;
-    public static final Block murderSpawn = Blocks.coreCitadel;
+    public static final Block murdererSpawn = Blocks.coreCitadel;
     public static final Block generator = Blocks.combustionGenerator;
     public static final Block exitDoor = Blocks.multiPress;
 
@@ -29,6 +29,7 @@ public class Generator {
     public static void load() {
         rules.waves = false;
         rules.canGameOver = false;
+        rules.lighting = true;
         rules.modeName = "Mindead";
 
         for (Team team : Team.all) {
@@ -51,7 +52,7 @@ public class Generator {
         Groups.build.each(build -> {
             if (build.block == generator) engines.add(new Engine(build.tileX(), build.tileY()));
 
-            if (build.block == exitDoor) {
+            if (build.block == exitDoor && door == null) {
                 Building end = findDoorEnd(build);
                 if (end == null) return;
 
