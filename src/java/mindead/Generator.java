@@ -1,10 +1,12 @@
 package mindead;
 
+import mindead.types.Door;
 import mindead.types.Engine;
 import mindustry.content.Blocks;
 import mindustry.game.Rules;
 import mindustry.game.Team;
 import mindustry.game.Rules.TeamRule;
+import mindustry.gen.Building;
 import mindustry.gen.Call;
 import mindustry.gen.Groups;
 import mindustry.maps.Map;
@@ -48,7 +50,17 @@ public class Generator {
     public static void generate() {
         Groups.build.each(build -> {
             if (build.block == generator) engines.add(new Engine(build.tileX(), build.tileY()));
+
+            if (build.block == exitDoor) {
+                Building end = findDoorEnd(build);
+                if (end == null) return;
+
+                door = new Door(build.tileOn(), end.tileOn());
+            }
         });
+
+        if (engines.isEmpty()) throw new RuntimeException("No engines found!");
+        if (door == null) throw new RuntimeException("No door found!");
 
         app.post(() -> {
             state.rules = rules;
@@ -58,5 +70,20 @@ public class Generator {
 
     public static void clear() {
         engines.clear();
+        door = null;
+    }
+
+    private static Building findDoorEnd(Building start) {
+        for (int x = 0; x < world.width(); x++) {
+            Building end = world.build(x, start.tileY());
+            if (end != null && end.block == exitDoor && end != start) return end;
+        }
+
+        for (int y = 0; y < world.height(); y++) {
+            Building end = world.build(start.tileX(), y);
+            if (end != null && end.block == exitDoor && end != start) return end;
+        }
+
+        return null;
     }
 }

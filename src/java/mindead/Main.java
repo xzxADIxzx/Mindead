@@ -5,6 +5,7 @@ import arc.util.CommandHandler;
 import arc.util.Log;
 import arc.util.Timer;
 import mindead.content.Schematics;
+import mindead.types.Door;
 import mindead.types.Engine;
 import mindustry.core.GameState.State;
 import mindustry.mod.Plugin;
@@ -15,6 +16,7 @@ import static mindustry.Vars.*;
 public class Main extends Plugin {
 
     public static Seq<Engine> engines = new Seq<>();
+    public static Door door;
 
     @Override
     public void init() {
