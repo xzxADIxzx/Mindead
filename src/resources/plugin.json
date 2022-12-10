@@ -4,7 +4,7 @@
 	"description": "It will work soon, I promise.",
 	"author": "xzxADIxzx",
 	"version": "-1.0.0",
-	"minGameVersion": "137",
+	"minGameVersion": "140.4",
 	"hidden": true,
 	"main": "mindead.Main"
 }
