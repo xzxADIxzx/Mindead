@@ -7,6 +7,7 @@ import mindead.content.Schematics;
 import mindead.types.Engine;
 import mindustry.game.EventType.*;
 import mindustry.mod.Plugin;
+import useful.Bundle;
 
 public class Main extends Plugin {
 
@@ -14,6 +15,8 @@ public class Main extends Plugin {
 
     @Override
     public void init() {
+        Bundle.load(Main.class);
+
         Schematics.load();
         Generator.load();
 

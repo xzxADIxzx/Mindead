@@ -11,7 +11,7 @@ public class Schematics {
     public static Schematic engine;
 
     public static void load() {
-        engine = load(0, -1, "BCCTAAbIaAbbWAabhaabBДABb");
+        engine = load(0, -1, "BCCtAAbiaAbbwAabIaabBдABb");
     }
 
     public static Schematic load(int x, int y, String base) {

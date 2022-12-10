@@ -4,36 +4,38 @@ import arc.graphics.Color;
 import arc.math.Mathf;
 import arc.math.geom.Position;
 import arc.util.Interval;
+import mindead.content.Schematics;
 import mindustry.content.Fx;
+import mindustry.game.Schematic;
 import mindustry.gen.Call;
 import mindustry.gen.Groups;
 import mindustry.gen.Player;
 import mindustry.gen.Sounds;
 import mindustry.graphics.Pal;
 
-import static mindead.content.Schematics.*;
 import static mindustry.Vars.*;
 
 public class Engine implements Position {
 
     public static final float radius = 80f;
+    public static final Schematic schematic = Schematics.engine;
 
     private float x, y;
     private float progress;
 
     private Interval timer = new Interval();
 
-    public Engine(int x, int y) { // TODO: add ShortSchematics and spawn engine scheme
+    public Engine(int x, int y) {
         this.x = x * tilesize + 4f;
         this.y = y * tilesize + 4f;
 
-        at(engine, x, y, state.rules.defaultTeam);
+        Schematics.at(schematic, x, y, state.rules.defaultTeam);
     }
 
     public void update() {
         float repairSpeed = 0f;
         for (Player player : Groups.player)
-            if (within(player, radius)) repairSpeed += 0.01; // TODO: different repair speed for different unit types
+            if (within(player, radius)) repairSpeed += .01f; // TODO: different repair speed for different unit types
 
         progress = Mathf.clamp(progress + repairSpeed);
         float visualProgress = repairSpeed == 0f ? 1f : progress;
@@ -43,7 +45,7 @@ public class Engine implements Position {
             Call.effect(Fx.mineSmall, x + Mathf.cosDeg(deg) * radius, y + Mathf.sinDeg(deg) * radius, 0f, color);
 
         float volume = progress == 1f ? 1f : .5f;
-        if (timer.get(4.55f * 60f / volume)) // sound length depends on pitch and idk why
+        if (timer.get(4.5f * 60f / volume)) // sound length depends on pitch and idk why
             Call.soundAt(Sounds.combustion, x, y, volume, volume); // volume and pitch are the same
     }
 
