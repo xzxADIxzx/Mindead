@@ -20,7 +20,7 @@ public class Schematics {
         engine = load(0, -1, "BCCtAAbiaAbbwAabIaabBдABb");
 
         doorStart = load(-2, -2, "ccBiaABkaABiBABkBABibABkbABiAaBkAaBiaaBkaaBiBaBkBaBibaCtbaBiCaBkCaBiABBkABBiaBBkaBBiBBCtBBBibBBkbBBiCBBkCBBiAbBkAbBiabCtabBiBbBkBbBibbBkbbBiCbBkCbBiACBkACBiCCBkCC");
-        doorFragment = load(-2, -2, "cCBeAA^BBHbABeCABHAaBeaa^aBHba^aBHAB^aBeBB^aBHCBBeAbBHabBeBb^B");
+        doorFragment = load(-2, -2, "cCBeAA^BBHbABeCABHAaBeaa^aBHba^aBHAB^aBeBB^aBHCBBeAbBHabBeBb^BBуaABУbABУAaBУbaBУCaBУAB^aBуBBBУCBBУab");
         doorEnd = load(-2, -2, "ccBiAABkAABiCABkCABiAaBkAaBiaaBkaaBiBaBkBaBibaCtbaBiCaBkCaBiABBkABBiaBBkaBBiBBCtBBBibBBkbBBiCBBkCBBiAbBkAbBiabCtabBiBbBkBbBibbBkbbBiCbBkCbBiaCBkaCBiBCBkBCBibCBkbC");
 
         // endregion
