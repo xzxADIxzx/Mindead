@@ -3,7 +3,9 @@ package mindead.types;
 import arc.graphics.Color;
 import arc.math.Mathf;
 import arc.math.geom.Position;
+import arc.struct.Seq;
 import arc.util.Interval;
+import arc.util.Time;
 import mindead.content.Schematics;
 import mindustry.content.Fx;
 import mindustry.game.Schematic;
@@ -19,6 +21,7 @@ public class Engine implements Position {
 
     public static final float radius = 80f;
     public static final Schematic schematic = Schematics.engine;
+    public static final Seq<Runnable> sounds = new Seq<>();
 
     private float x, y;
     private float progress;
@@ -44,9 +47,8 @@ public class Engine implements Position {
         for (int deg = 0; deg < visualProgress * 360f; deg += 10)
             Call.effect(Fx.mineSmall, x + Mathf.cosDeg(deg) * radius, y + Mathf.sinDeg(deg) * radius, 0f, color);
 
-        float volume = progress == 1f ? 1f : .5f;
-        if (timer.get(4.5f * 60f / volume)) // sound length depends on pitch and idk why
-            Call.soundAt(Sounds.combustion, x, y, volume, volume); // volume and pitch are the same
+        float pitch = progress == 1f ? 1f : .6f; // sound length depends on pitch and idk why
+        if (timer.get(4.5f * 60f / pitch)) soundAt(x, y, pitch);
     }
 
     public boolean inactivated() {
@@ -61,5 +63,14 @@ public class Engine implements Position {
     @Override
     public float getY() {
         return y;
+    }
+
+    public void soundAt(float x, float y, float pitch) {
+        sounds.add(() -> Call.soundAt(Sounds.combustion, x, y, pitch / 1.2f, pitch));
+    }
+
+    public static void playSounds() {
+        for (int i = 0; i < sounds.size; i++)
+            Time.run(i, sounds.pop());
     }
 }

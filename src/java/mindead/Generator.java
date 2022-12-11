@@ -1,5 +1,6 @@
 package mindead;
 
+import arc.util.Time;
 import mindead.types.Door;
 import mindead.types.Engine;
 import mindustry.content.Blocks;
@@ -9,6 +10,7 @@ import mindustry.game.Rules.TeamRule;
 import mindustry.gen.Building;
 import mindustry.gen.Call;
 import mindustry.gen.Groups;
+import mindustry.gen.Sounds;
 import mindustry.maps.Map;
 import mindustry.world.Block;
 import mindustry.world.blocks.logic.LogicBlock.LogicBuild;
@@ -46,6 +48,9 @@ public class Generator {
     public static void playCutscene() {
         state.rules.objectiveFlags.add("play");
         Call.setRules(state.rules);
+
+        Time.run(50f, () -> Call.sound(Sounds.wave, 10f, .9f, -1f));
+        Time.run(60f, () -> Call.sound(Sounds.wave, 10f, .9f, 1f));
     }
 
     public static void play() {
@@ -84,6 +89,8 @@ public class Generator {
     public static void clear() {
         engines.clear();
         door = null;
+
+        Time.clear();
     }
 
     private static Building findDoorEnd(Building start) {

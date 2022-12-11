@@ -29,6 +29,8 @@ public class Main extends Plugin {
             engines.each(Engine::update);
             door.update();
 
+            Engine.playSounds();
+
             if (door.opening || engines.contains(Engine::inactivated)) return;
             door.open();
         }, 0f, 0.2f);
