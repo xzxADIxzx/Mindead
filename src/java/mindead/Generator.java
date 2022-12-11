@@ -11,6 +11,7 @@ import mindustry.gen.Call;
 import mindustry.gen.Groups;
 import mindustry.maps.Map;
 import mindustry.world.Block;
+import mindustry.world.blocks.logic.LogicBlock.LogicBuild;
 
 import static arc.Core.*;
 import static mindead.Main.*;
@@ -24,6 +25,7 @@ public class Generator {
     public static final Block exitDoor = Blocks.multiPress;
 
     public static final Rules rules = new Rules();
+    public static String cutscene;
     public static Map lobby, last;
 
     public static void load() {
@@ -37,6 +39,13 @@ public class Generator {
             rule.cheat = true; // for effects from blocks
             rule.unitDamageMultiplier = rule.blockDamageMultiplier = 0f;
         }
+
+        cutscene = mods.getMod(Main.class).root.child("cutscene").readString();
+    }
+
+    public static void playCutscene() {
+        state.rules.objectiveFlags.add("play");
+        Call.setRules(state.rules);
     }
 
     public static void play() {
@@ -62,6 +71,9 @@ public class Generator {
 
         if (engines.isEmpty()) throw new RuntimeException("No engines found!");
         if (door == null) throw new RuntimeException("No door found!");
+
+        world.tile(0, 0).setBlock(Blocks.worldProcessor, Team.malis);
+        if (world.build(0, 0) instanceof LogicBuild build) build.updateCode(cutscene.formatted(door.cx, door.cy));
 
         app.post(() -> {
             state.rules = rules;
