@@ -2,13 +2,17 @@ package mindead.types;
 
 import arc.func.Cons2;
 import arc.math.Mathf;
+import mindead.Generator;
 import mindead.content.Schematics;
 import mindustry.game.Schematic;
 import mindustry.world.Tile;
 
 public class Door {
 
-    public int sx, sy, ex, ey, dx, dy;
+    public int sx, sy, ex, ey, cx, cy, dx, dy;
+
+    public int progress;
+    public boolean opening;
 
     public Door(Tile start, Tile end) {
         this.sx = start.x < end.x ? start.x : end.x;
@@ -16,6 +20,9 @@ public class Door {
 
         this.sy = start.y < end.y ? start.y : end.y;
         this.ey = start.y < end.y ? end.y : start.y;
+
+        this.cx = (sx + ex) / 2;
+        this.cy = (sy + ey) / 2;
 
         this.dx = Mathf.clamp(ex - sy, 0, 1);
         this.dy = Mathf.clamp(ey - sy, 0, 1);
@@ -33,4 +40,9 @@ public class Door {
     }
 
     public void update() {} // TODO win for survivors and lose for murderer
+
+    public void open() {
+        opening = true;
+        Generator.playCutscene();
+    }
 }

@@ -3,4 +3,5 @@ jump 0 equal play false
 cutscene pan %s %s 0.06
 wait 5
 cutscene stop
+wait 5
 setblock block @air 0 0 @derelict 0

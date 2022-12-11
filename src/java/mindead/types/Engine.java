@@ -49,6 +49,10 @@ public class Engine implements Position {
             Call.soundAt(Sounds.combustion, x, y, volume, volume); // volume and pitch are the same
     }
 
+    public boolean inactivated() {
+        return progress < 1f;
+    }
+
     @Override
     public float getX() {
         return x;

@@ -27,6 +27,10 @@ public class Main extends Plugin {
 
         Timer.schedule(() -> {
             engines.each(Engine::update);
+            door.update();
+
+            if (door.opening || engines.contains(Engine::inactivated)) return;
+            door.open();
         }, 0f, 0.2f);
     }
 
