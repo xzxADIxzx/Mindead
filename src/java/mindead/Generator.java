@@ -78,7 +78,7 @@ public class Generator {
         if (door == null) throw new RuntimeException("No door found!");
 
         world.tile(0, 0).setBlock(Blocks.worldProcessor, Team.malis);
-        if (world.build(0, 0) instanceof LogicBuild build) build.updateCode(cutscene.formatted(door.cx, door.cy));
+        if (world.build(0, 0) instanceof LogicBuild build) build.updateCode(cutscene.formatted(door.centerX(), door.centerY()));
 
         app.post(() -> {
             state.rules = rules;

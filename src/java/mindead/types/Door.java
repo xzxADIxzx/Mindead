@@ -14,62 +14,43 @@ import static mindustry.Vars.*;
 
 public class Door {
 
-    public int sx, sy, ex, ey, cx, cy, dx, dy;
-    public int length;
+    public int x, y, length;
+    public boolean vertical;
 
     public int progress;
     public boolean opening;
 
     public Door(Tile start, Tile end) {
-        this.sx = start.x < end.x ? start.x : end.x;
-        this.ex = start.x < end.x ? end.x : start.x;
+        this.x = start.x < end.x ? start.x : end.x;
+        this.y = start.y < end.y ? start.y : end.y;
 
-        this.sy = start.y < end.y ? start.y : end.y;
-        this.ey = start.y < end.y ? end.y : start.y;
+        this.vertical = start.x == end.x;
+        this.length = Math.abs(vertical ? start.y - end.y : start.x - end.x);
 
-        this.cx = (sx + ex) / 2;
-        this.cy = (sy + ey) / 2;
-
-        this.dx = Mathf.clamp(ex - sy, 0, 1);
-        this.dy = Mathf.clamp(ey - sy, 0, 1);
-
-        this.length = sx == ex ? ey - sy : ex - sx;
-
-        if (sx == ex) generate(sy, ey, (schema, y) -> Schematics.terrainAt(schema, sx, y, true)); // vertical
-        if (sy == ey) generate(sx, ex, (schema, x) -> Schematics.terrainAt(schema, x, sy, false)); // horizontal
+        generate((schema, y) -> Schematics.terrainAt(schema, globalX(0, y), globalY(0, y), vertical));
     }
 
-    public void generate(int from, int to, Cons2<Schematic, Integer> cons) {
-        for (int i = from + 4; i < to - 2; i += 4)
+    public void generate(Cons2<Schematic, Integer> cons) {
+        for (int i = 4; i < length - 2; i += 4)
             cons.get(Schematics.doorFragment, i);
 
-        cons.get(Schematics.doorStart, from);
-        cons.get(Schematics.doorEnd, to);
+        cons.get(Schematics.doorStart, 0);
+        cons.get(Schematics.doorEnd, length);
     }
 
     public void update() { // TODO win for survivors and lose for murderers
-        if (!opening || progress == length / 2 - 1) return;
+        if (!opening || progress == length - 3 || ++progress % 2 == 0) return;
 
-        if (sx == ex) {
-            slice(sx - 2, cy + progress + 1, 5, 1);
-            slice(sx - 2, cy - progress, 5, 1);
-        }
-        if (sy == ey) {
-            slice(cx + progress + 1, sy - 2, 1, 5);
-            slice(cx - progress, sy - 2, 1, 5);
-        }
-
-        progress++;
+        slice((length + progress) / 2);
+        slice((length - progress) / 2);
     }
 
-    public void slice(int sx, int sy, int width, int height) {
-        for (int x = sx; x < sx + width; x++) {
-            for (int y = sy; y < sy + height; y++) {
-                var build = world.tile(x, y).build;
-                if (build != null) build.kill();
+    public void slice(int localY) {
+        for (int x = -2; x <= 2; x++) {
+            var tile = globalTile(x, localY);
+            if (tile.build != null) tile.build.kill();
 
-                if (Mathf.chance(.8f)) Call.effect(Fx.smokeCloud, x * tilesize, y * tilesize, 0f, Color.white);
-            }
+            if (Mathf.chance(.8f)) Call.effect(Fx.smokeCloud, tile.drawx(), tile.drawy(), 0f, Color.white);
         }
     }
 
@@ -77,4 +58,28 @@ public class Door {
         opening = true;
         Generator.playCutscene();
     }
+
+    // region getters
+
+    public int globalX(int localX, int localY) {
+        return this.x + (vertical ? localX : localY);
+    }
+
+    public int globalY(int localX, int localY) {
+        return this.y + (vertical ? localY : localX);
+    }
+
+    public Tile globalTile(int localX, int localY) {
+        return world.tile(globalX(localX, localY), globalY(localX, localY));
+    }
+
+    public int centerX() {
+        return vertical ? this.x : this.x + length / 2;
+    }
+
+    public int centerY() {
+        return vertical ? this.y + length / 2 : this.y;
+    }
+
+    // endregion
 }
