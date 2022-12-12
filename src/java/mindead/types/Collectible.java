@@ -25,8 +25,8 @@ public class Collectible extends ZoneActivatable {
 
     @Override
     public void playSound() {
-        float pitch = activation == 0 ? .1f : .9f;
-        if (timer.get(60f / pitch)) soundAt(Sounds.chatMessage, x, y, 100f, pitch);
+        float pitch = activation == 0 ? .2f : .9f;
+        if (timer.get(60f / pitch)) soundAt(Sounds.chatMessage, x, y, 120f, pitch);
 
         if (activation == 0f) progress = 0f;
     }

@@ -5,7 +5,6 @@ import mindustry.content.Blocks;
 import mindustry.game.Schematic;
 import mindustry.game.Team;
 import mindustry.world.Tile;
-import mindustry.world.blocks.environment.Prop;
 import useful.ShortSchematics;
 
 import static mindustry.Vars.*;
@@ -49,12 +48,10 @@ public class Schematics {
         schematic.tiles.each(st -> {
             Tile tile = world.tile(st.x + x, st.y + y);
 
-            if (st.block.isFloor() && !st.block.isOverlay())
-                tile.setFloorUnder(st.block.asFloor());
-            else if (st.block instanceof Prop)
-                tile.setBlock(st.block);
-            else if (st.block.isOverlay())
+            if (st.block.isOverlay())
                 tile.setOverlay(st.block);
+            else if (st.block.isFloor())
+                tile.setFloorUnder(st.block.asFloor());
             else
                 tile.setBlock(st.block, Team.malis);
 
