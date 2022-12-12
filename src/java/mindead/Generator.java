@@ -1,8 +1,8 @@
 package mindead;
 
 import arc.util.Time;
-import mindead.types.Door;
-import mindead.types.Engine;
+import mindead.content.Bonuses;
+import mindead.types.*;
 import mindustry.content.Blocks;
 import mindustry.game.Rules;
 import mindustry.game.Team;
@@ -24,6 +24,7 @@ public class Generator {
     public static final Block survivalSpawn = Blocks.coreShard;
     public static final Block murdererSpawn = Blocks.coreCitadel;
     public static final Block generator = Blocks.combustionGenerator;
+    public static final Block collectible = Blocks.sorter;
     public static final Block exitDoor = Blocks.multiPress;
 
     public static final Rules rules = new Rules();
@@ -72,6 +73,11 @@ public class Generator {
 
                 door = new Door(build.tileOn(), end.tileOn());
             }
+        });
+
+        world.tiles.eachTile(tile -> { // idk why, but sorter is not a building
+            Building build = tile.build;
+            if (build != null && build.block == collectible) collectibles.add(new Collectible(build.tileX(), build.tileY(), Bonuses.repairTools));
         });
 
         if (engines.isEmpty()) throw new RuntimeException("No engines found!");
