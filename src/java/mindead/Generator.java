@@ -58,6 +58,7 @@ public class Generator {
         clear();
 
         last = maps.customMaps().random(last);
+        last = maps.customMaps().find(map -> map.name().equals("Desert"));
         world.loadMap(last);
 
         generate();
@@ -65,8 +66,10 @@ public class Generator {
 
     public static void generate() {
         Groups.build.each(build -> {
-            if (build.block == generator) engines.add(new Engine(build.tileX(), build.tileY()));
+            if (build.block == survivalSpawn) Logic.setSurvivalSpawn(build.tileX(), build.tileY());
+            if (build.block == murdererSpawn) Logic.setMurdererSpawn(build.tileX(), build.tileY());
 
+            if (build.block == generator) engines.add(new Engine(build.tileX(), build.tileY()));
             if (build.block == exitDoor && door == null) {
                 Building end = findDoorEnd(build);
                 if (end == null) return;
@@ -94,7 +97,11 @@ public class Generator {
 
     public static void clear() {
         engines.clear();
+        collectibles.clear();
         door = null;
+
+        Logic.survivals.clear();
+        Logic.murderers.clear();
 
         Time.clear();
     }

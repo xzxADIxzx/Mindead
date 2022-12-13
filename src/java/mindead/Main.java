@@ -26,6 +26,8 @@ public class Main extends Plugin {
         Schematics.load();
         Generator.load();
 
+        netServer.assigner = (player, players) -> Logic.assign(player);
+
         Timer.schedule(() -> {
             engines.each(Engine::update);
             collectibles.each(Collectible::update);
