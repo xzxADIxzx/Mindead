@@ -1,5 +1,7 @@
 package mindead;
 
+import arc.struct.Seq;
+import arc.util.Log;
 import arc.util.Time;
 import mindead.content.Bonuses;
 import mindead.types.*;
@@ -29,6 +31,8 @@ public class Generator {
 
     public static final Rules rules = new Rules();
     public static String cutscene;
+
+    public static Seq<Map> available;
     public static Map lobby, last;
 
     public static void load() {
@@ -44,6 +48,12 @@ public class Generator {
         }
 
         cutscene = mods.getMod(Main.class).root.child("cutscene").readString();
+        lobby = maps.byName("Lobby");
+
+        if (lobby == null) throw new RuntimeException("Lobby map not found! Did you forget to download this map from GitHub?");
+
+        available = maps.customMaps();
+        available.remove(lobby);
     }
 
     public static void playCutscene() {
@@ -54,14 +64,26 @@ public class Generator {
         Time.run(60f, () -> Call.sound(Sounds.wave, 10f, .9f, 1f));
     }
 
+    public static void playLobby() {
+        clear();
+        world.loadMap(lobby);
+        generate();
+    }
+
     public static void play() {
         clear();
 
-        last = maps.customMaps().random(last);
-        last = maps.customMaps().find(map -> map.name().equals("Desert"));
+        last = available.random(last);
         world.loadMap(last);
 
-        generate();
+        try {
+            generate();
+        } catch (Throwable ignored) {
+            available.remove(last);
+            Log.err("Failed to load map " + last.name(), ignored);
+
+            if (available.any()) play();
+        }
     }
 
     public static void generate() {
@@ -89,10 +111,8 @@ public class Generator {
         world.tile(0, 0).setBlock(Blocks.worldProcessor, Team.malis);
         if (world.build(0, 0) instanceof LogicBuild build) build.updateCode(cutscene.formatted(door.centerX(), door.centerY()));
 
-        app.post(() -> {
-            state.rules = rules;
-            Call.setRules(rules);
-        });
+        state.rules = rules;
+        app.post(() -> Call.setRules(rules));
     }
 
     public static void clear() {

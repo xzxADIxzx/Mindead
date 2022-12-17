@@ -51,7 +51,7 @@ public class Main extends Plugin {
                 return;
             }
 
-            Generator.play();
+            Generator.playLobby();
 
             logic.play();
             netServer.openServer();

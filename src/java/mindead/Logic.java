@@ -21,7 +21,7 @@ public class Logic {
     public static boolean isPlaying;
 
     public static Team assign(Player player) { // TODO derelict and spawn within severals seconds
-        Team team = survivals.size / murderers.size >= 1f / 3f ? Team.crux : Team.sharded;
+        Team team = murderers.isEmpty() || survivals.size / murderers.size >= 1f / 3f ? Team.crux : Team.sharded;
 
         if (team == Team.sharded) survivals.add(player);
         if (team == Team.crux) murderers.add(player);
