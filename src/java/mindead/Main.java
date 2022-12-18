@@ -1,5 +1,6 @@
 package mindead;
 
+import arc.Events;
 import arc.struct.Seq;
 import arc.util.CommandHandler;
 import arc.util.Log;
@@ -7,6 +8,7 @@ import arc.util.Timer;
 import mindead.content.*;
 import mindead.types.*;
 import mindustry.core.GameState.State;
+import mindustry.game.EventType.*;
 import mindustry.mod.Plugin;
 import useful.Bundle;
 import useful.DynamicMenus;
@@ -29,6 +31,9 @@ public class Main extends Plugin {
         Generator.load();
 
         netServer.assigner = (player, players) -> Logic.assign(player);
+
+        Events.on(PlayerJoin.class, event -> Logic.join(event.player));
+        Events.on(PlayerLeave.class, event -> Logic.leave(event.player));
 
         Timer.schedule(() -> {
             engines.each(Engine::update);

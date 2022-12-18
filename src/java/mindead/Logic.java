@@ -25,26 +25,26 @@ public class Logic {
     public static boolean isPlaying;
 
     public static Team assign(Player player) {
-        var human = Human.find(player.uuid());
-        if (human != null) {
-            human.setPlayer(player);
-            return human.team();
-        }
-
-        Team team = murderers.isEmpty() || survivals.size / murderers.size >= 3 ? Team.crux : Team.sharded;
-        join(player, team);
-        return team;
+        return murderers.isEmpty() || survivals.size / murderers.size >= 3 ? Team.crux : Team.sharded;
     }
 
-    public static void join(Player player, Team team) {
+    public static void join(Player player) {
+        var found = Human.find(player.uuid());
+        if (found != null) {
+            found.setPlayer(player);
+            return;
+        }
+
         DynamicMenus.menu(player, "@join.name", "@join.text", new String[][] {{"Crawler"}}, option -> {
             Human human = new Human(player, UnitTypes.crawler);
             spawn(human);
 
-            if (team == Team.sharded) survivals.add(human);
-            if (team == Team.crux) murderers.add(human);
+            if (player.team() == Team.sharded) survivals.add(human);
+            if (player.team() == Team.crux) murderers.add(human);
         });
     }
+
+    public static void leave(Player player) {}
 
     // region humans
 
