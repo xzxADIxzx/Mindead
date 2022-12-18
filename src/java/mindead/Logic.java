@@ -25,6 +25,12 @@ public class Logic {
     public static boolean isPlaying;
 
     public static Team assign(Player player) {
+        var human = Human.find(player.uuid());
+        if (human != null) {
+            human.setPlayer(player);
+            return human.team();
+        }
+
         Team team = murderers.isEmpty() || survivals.size / murderers.size >= 3 ? Team.crux : Team.sharded;
         join(player, team);
         return team;
@@ -40,11 +46,18 @@ public class Logic {
         });
     }
 
+    // region humans
+
+    public static Seq<Human> all() {
+        return survivals.copy().add(murderers);
+    }
+
     public static void each(Cons<Human> cons) {
         survivals.each(cons);
         murderers.each(cons);
     }
 
+    // endregion
     // region spawn
 
     public static void spawn(Human human) {
@@ -58,7 +71,7 @@ public class Logic {
 
     public static void spawn(Human human, Vec2 spawn) {
         spawn = new Vec2().rnd(Logic.spawnRadius * tilesize).add(spawn);
-        human.player.unit(human.type.spawn(human.team(), spawn));
+        human.setUnit(human.type.spawn(human.team(), spawn));
     }
 
     public static void setSurvivalSpawn(int x, int y) {

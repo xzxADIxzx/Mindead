@@ -1,8 +1,10 @@
 package mindead.types;
 
+import mindead.Logic;
 import mindustry.content.Blocks;
 import mindustry.game.Team;
 import mindustry.gen.Player;
+import mindustry.gen.Unit;
 import mindustry.type.UnitType;
 import mindustry.world.Tile;
 import useful.Bundle;
@@ -19,10 +21,10 @@ public class Human implements LocaleProvider {
     public Bonus bonus;
 
     private Tile tileOn;
+    private Unit unit;
 
     public Human(Player player, UnitType type) {
-        this.player = player;
-        this.locale = Bundle.locale(player);
+        setPlayer(player);
         this.type = type;
     }
 
@@ -43,6 +45,33 @@ public class Human implements LocaleProvider {
     @Override
     public Locale locale() {
         return locale;
+    }
+
+    // endregion
+    // region setters
+
+    public void setPlayer(Player player) {
+        if (this.player != null) player.team(this.player.team());
+        if (this.unit != null) player.unit(this.unit);
+
+        this.player = player;
+        this.locale = Bundle.locale(player);
+    }
+
+    public void setUnit(Unit unit) {
+        this.unit = unit;
+        this.player.unit(unit);
+    }
+
+    // endregion
+    // region find
+
+    public static Human find(Player player) {
+        return Logic.all().find(human -> human.player == player);
+    }
+
+    public static Human find(String uuid) {
+        return Logic.all().find(human -> human.player.uuid().equals(uuid));
     }
 
     // endregion

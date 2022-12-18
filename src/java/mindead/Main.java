@@ -20,7 +20,7 @@ public class Main extends Plugin {
     public static Door door;
 
     @Override
-    public void init() {
+    public void init() { // TODO when player leave, replace unit controller with AI
         Bundle.load(Main.class);
         DynamicMenus.load();
 
