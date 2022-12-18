@@ -25,7 +25,7 @@ public class Logic {
     public static boolean isPlaying;
 
     public static Team assign(Player player) {
-        Team team = murderers.isEmpty() || survivals.size / murderers.size >= 1f / 3f ? Team.crux : Team.sharded;
+        Team team = murderers.isEmpty() || survivals.size / murderers.size >= 3 ? Team.crux : Team.sharded;
         join(player, team);
         return team;
     }
@@ -57,7 +57,7 @@ public class Logic {
     }
 
     public static void spawn(Human human, Vec2 spawn) {
-        spawn = new Vec2().rnd(Logic.spawnRadius * tilesize).add(survivalSpawn);
+        spawn = new Vec2().rnd(Logic.spawnRadius * tilesize).add(spawn);
         human.player.unit(human.type.spawn(human.team(), spawn));
     }
 

@@ -39,6 +39,7 @@ public class Generator {
         rules.waves = false;
         rules.canGameOver = false;
         rules.lighting = true;
+        rules.unitCap = 16;
         rules.modeName = "Mindead";
 
         for (Team team : Team.all) {
