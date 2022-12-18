@@ -33,6 +33,8 @@ public class Logic {
     public static void join(Player player, Team team) {
         DynamicMenus.menu(player, "@join.name", "@join.text", new String[][] {{"Crawler"}}, option -> {
             Human human = new Human(player, UnitTypes.crawler);
+            spawn(human);
+
             if (team == Team.sharded) survivals.add(human);
             if (team == Team.crux) murderers.add(human);
         });
@@ -56,7 +58,7 @@ public class Logic {
 
     public static void spawn(Human human, Vec2 spawn) {
         spawn = new Vec2().rnd(Logic.spawnRadius * tilesize).add(survivalSpawn);
-        human.player.unit(human.type.spawn(human.player.team(), spawn));
+        human.player.unit(human.type.spawn(human.team(), spawn));
     }
 
     public static void setSurvivalSpawn(int x, int y) {

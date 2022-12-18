@@ -9,6 +9,7 @@ import mindead.types.*;
 import mindustry.core.GameState.State;
 import mindustry.mod.Plugin;
 import useful.Bundle;
+import useful.DynamicMenus;
 
 import static mindustry.Vars.*;
 
@@ -21,6 +22,7 @@ public class Main extends Plugin {
     @Override
     public void init() {
         Bundle.load(Main.class);
+        DynamicMenus.load();
 
         Bonuses.load();
         Schematics.load();
@@ -33,6 +35,7 @@ public class Main extends Plugin {
             collectibles.each(Collectible::update);
             door.update();
 
+            Logic.each(Human::update);
             Engine.playSounds();
 
             if (door.opening || engines.contains(Engine::inactivated)) return;

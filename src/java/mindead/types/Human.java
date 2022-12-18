@@ -1,9 +1,10 @@
 package mindead.types;
 
-import mindustry.content.UnitTypes;
+import mindustry.content.Blocks;
 import mindustry.game.Team;
 import mindustry.gen.Player;
 import mindustry.type.UnitType;
+import mindustry.world.Tile;
 import useful.Bundle;
 import useful.Bundle.LocaleProvider;
 
@@ -17,12 +18,20 @@ public class Human implements LocaleProvider {
     public UnitType type;
     public Bonus bonus;
 
+    private Tile tileOn;
+
     public Human(Player player, UnitType type) {
         this.player = player;
         this.locale = Bundle.locale(player);
-
         this.type = type;
-        this.player.team(type == UnitTypes.crawler ? Team.sharded : Team.crux); // TODO replace with Units.team(UnitType type)
+    }
+
+    public void update() {
+        if (player.tileOn() == this.tileOn) return;
+        this.tileOn = player.tileOn();
+
+        if (tileOn.floor() == Blocks.iceSnow) tileOn.setFloorNet(Blocks.ice);
+        if (tileOn.floor() == Blocks.snow) tileOn.setFloorNet(Blocks.iceSnow);
     }
 
     // region getters
